@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>디데이 계산기</title>
+    <style>
+      body {
+        background-image: url(img/eXPB3v-_4_H1YsVU3vOMkEbxGGbp43jBeUoO0YVOFNkj-Y0p0YkaUDNiuHb8TP07vaWWD2zovr8MQkrR57RRLhcsjHBKjto7m61yaLX0lA4EXEf9gvUMrVyJGpiPL8nzzAvFhF8EBjeh92t94kYFEA.jpg);
+        background-size: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>디데이 계산기</h1>
+    <p id="todayDate"></p>
+    <label for="date">날짜</label>
+    <input type="date" name="" id="date" />
+    <label for="title">주제</label>
+    <input type="text" id="title" />
+    <button id="btn">계산하기</button>
+    <button id="btn2">추가하기</button>
+    <p id="디데이"></p>
+    <ul id="ddayList"></ul>
+    <script>
+      let d_day = document.getElementById("디데이");
+      let today = document.getElementById("todayDate");
+      // input 태그 가져오기
+      let inputDate = document.getElementById("date");
+      // button 태그 가져오기
+      let btn = document.getElementById("btn");
+
+      let dateCheck = new Date();
+      let year = dateCheck.getFullYear();
+      let month = dateCheck.getMonth() + 1;
+      let date = dateCheck.getDate();
+      let numDay = dateCheck.getDay();
+      let day = "";
+      switch (numDay) {
+        case 0:
+          day = "일요일";
+          break;
+        case 1:
+          day = "월요일";
+          break;
+        case 2:
+          day = "화요일";
+          break;
+        case 3:
+          day = "수요일";
+          break;
+        case 4:
+          day = "목요일";
+          break;
+        case 5:
+          day = "금요일";
+          break;
+        case 6:
+          day = "토요일";
+          break;
+        default:
+          day = "없는요일";
+      }
+      today.innerHTML = `${year}년 ${month}월 ${date}일 ${day}`;
+
+      function getDiffDay(selectedDate) {
+        let diff = selectedDate - dateCheck;
+        let diffDay = Math.ceil(diff / (1000 * 60 * 60 * 24));
+        return diffDay;
+      }
+      // 클릭 이벤트 발생
+      btn.addEventListener("click", () => {
+        // input태그에서 선택된 문자열을
+        // 날짜 객체로 변환
+        let seletedDate = inputDate.value;
+        let selDate = new Date(seletedDate);
+        //밀리초
+        let dday = selDate - dateCheck;
+        dday = dday / (1000 * 60 * 60 * 24);
+        dday = Math.ceil(dday);
+        if (dday >= 0) {
+          let printD_day = `${dday}일 남았습니다.`;
+          d_day.innerHTML = printD_day;
+        } else d_day.innerHTML = "입력오류";
+        d_day.style = "color : red;";
+      });
+
+      let addBtn = document.getElementById("btn2");
+      addBtn.addEventListener("click", () => {
+        //input text태그의 값 가져오기
+        let title = document.getElementById("title").value;
+        //날짜값 가져오기
+        let date = document.getElementById("date").value;
+        //함수를사용해서 날짜차이값 반환
+        let diffDay = getDiffDay(new Date(date));
+        //ul태그 가져오기
+        let ul = document.getElementById("ddayList");
+        //li태그 생성
+        let li = document.createElement("li");
+        li.innerHTML = `<span style='color:red'>${title}</span>까지 ${diffDay}일 남았습니다 `;
+        ul.appendChild(li);
+      });
+    </script>
+  </body>
+</html>
